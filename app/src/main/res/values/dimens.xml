@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="jweather_content_padding_small">8dp</dimen>
+    <dimen name="jweather_content_padding_medium">16dp</dimen>
+    <dimen name="jweather_content_padding_large">24dp</dimen>
+
+
+    <dimen name="jweather_title_xxl">42sp</dimen>
+    <dimen name="jweather_title_xl">36sp</dimen>
+    <dimen name="jweather_title_l">30sp</dimen>
+    <dimen name="jweather_title_m">24sp</dimen>
+
+    <dimen name="jweather_content_m">16sp</dimen>
+    <dimen name="jweather_content_xm">18sp</dimen>
+
+</resources>

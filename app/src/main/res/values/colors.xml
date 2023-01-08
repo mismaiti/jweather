@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="jweather_primary">#DCC93D</color>
+    <color name="jweather_primary_background">#73ABA46B</color>
+
 </resources>

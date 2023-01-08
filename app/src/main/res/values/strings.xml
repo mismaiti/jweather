@@ -3,4 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_city_world">Cities</string>
     <string name="title_favorites">Favorites</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="temperature_with_value">Temperature: %.1f C</string>
+    <string name="humidity_and_wind_speed_with_value">Humidity: %.1f - Wind speed: %.1f mph</string>
+    <string name="weather_condition_with_value">Weather condition: %s</string>
 </resources>

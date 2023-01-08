@@ -1,38 +1,47 @@
 package com.jweatherinfo.ui.cityworld
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.happyfresh.happyarch.ComponentProvider
+import com.happyfresh.happyarch.Subscribe
 import com.jweatherinfo.android.databinding.FragmentCitiesBinding
+import com.jweatherinfo.core.ui.BaseFragment
+import com.jweatherinfo.data.event.Loaded
+import com.jweatherinfo.data.event.OnSubmit
+import com.jweatherinfo.data.models.WeatherInfo
+import com.jweatherinfo.ui.component.search.SearchCitiesComponent
+import com.jweatherinfo.ui.component.weather.WeatherDetailsComponent
+import com.jweatherinfo.ui.component.weatherdaily.WeatherListComponent
 
-class CitiesFragment : Fragment() {
+class CitiesFragment : BaseFragment<FragmentCitiesBinding>() {
 
     private val viewModel: CitiesViewModel by viewModels()
 
-    private var _binding: FragmentCitiesBinding? = null
-    private val binding: FragmentCitiesBinding?
-        get() = _binding
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentCitiesBinding.inflate(inflater, container, false)
-        return binding?.root
+    override fun initViewBinding(inflater: LayoutInflater): FragmentCitiesBinding {
+        return FragmentCitiesBinding.inflate(inflater)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+    override fun onFragmentInitiated() {
+
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun bindComponent(provider: ComponentProvider) {
+        with(provider) {
+            add(
+                SearchCitiesComponent::class.java,
+                binding?.componentSearchCitiesContainer?.root
+            )
+            add(
+                WeatherDetailsComponent::class.java,
+                binding?.componentWeatherDetailsCitiesContainer?.root
+            )
+        }
     }
+
+    @Subscribe(SearchCitiesComponent::class)
+    fun subscribeSearchQueries(onSubmit: OnSubmit<String>) {
+        eventObservable.emit(WeatherDetailsComponent::class.java, Loaded(WeatherInfo.mockSingle))
+    }
+
 
 }
