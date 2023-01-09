@@ -4,7 +4,9 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.happyfresh.happyarch.EventObservable
 import com.jweatherinfo.core.ui.BaseComponent
+import com.jweatherinfo.core.util.MockAbleOnDebug
 
+@MockAbleOnDebug
 class SearchCitiesComponent(view: View, lifecycleOwner: LifecycleOwner) :
     BaseComponent<SearchCitiesUiView>(view, lifecycleOwner) {
 
@@ -14,6 +16,7 @@ class SearchCitiesComponent(view: View, lifecycleOwner: LifecycleOwner) :
 
     override fun onCreate() {
         super.onCreate()
+
         uiView.setupSearchView()
     }
 }

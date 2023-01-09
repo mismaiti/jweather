@@ -8,7 +8,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.jweatherinfo.android.R
 import com.jweatherinfo.android.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         supportActionBar?.hide()
+
 
     }
 }

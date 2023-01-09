@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.happyfresh.happyarch.EventObservable
 import com.jweatherinfo.android.databinding.ComponentWeatherListBinding
+import com.jweatherinfo.core.ext.visible
 import com.jweatherinfo.core.ui.BaseUiView
 import com.jweatherinfo.data.models.WeatherInfo
 
@@ -29,6 +30,8 @@ class WeatherListUiView(view: View, eventObservable: EventObservable) :
     }
 
     fun loadDailyList(weatherList: List<WeatherInfo>) {
+        binding?.titleWeatherForecastTv?.visible()
         adapter.setData(weatherList)
+        adapter.notifyDataSetChanged()
     }
 }

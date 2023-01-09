@@ -29,6 +29,7 @@ class WeatherDetailsComponent(view: View, lifecycleOwner: LifecycleOwner)
         }
     }
 
+    @Suppress("unused")
     @Subscribe(WeatherDetailsComponent::class)
     fun subscribeLoadingState(loading: Loading) {
         uiView.showLoadingState()

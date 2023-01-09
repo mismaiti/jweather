@@ -15,5 +15,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/component_search_cities_container"/>
 
+    <include layout="@layout/component_weather_list"
+        android:id="@+id/component_weather_list_city_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/component_weather_details_cities_container"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,7 @@ class WeatherDetailsUiView(view: View, eventObservable: EventObservable) :
             weatherDetailProgressBar.gone()
 
             with(weatherInfo) {
-                val cityString = StringBuilder(city)
+                val cityString = StringBuilder(city.orEmpty())
                 val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
                 cityString.append(" ")
                 cityString.append(dateFormat.format(date))

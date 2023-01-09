@@ -8,7 +8,7 @@ import com.jweatherinfo.data.models.WeatherInfo
 
 class WeatherListAdapter : RecyclerView.Adapter<WeatherInfoViewHolder>() {
 
-    private var weatherList = listOf<WeatherInfo>()
+    private var weatherList = mutableListOf<WeatherInfo>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherInfoViewHolder {
         val binding = ItemDailyWeatherBinding.inflate(LayoutInflater.from(parent.context))
@@ -25,7 +25,9 @@ class WeatherListAdapter : RecyclerView.Adapter<WeatherInfoViewHolder>() {
 
     @Suppress("notifyDataSetChanged")
     fun setData(weatherList: List<WeatherInfo>) {
-        this.weatherList = weatherList
-        notifyDataSetChanged()
+        if (this.weatherList.isNotEmpty()) {
+            this.weatherList.clear()
+        }
+        this.weatherList = weatherList.toMutableList()
     }
 }

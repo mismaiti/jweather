@@ -1,19 +1,27 @@
 package com.jweatherinfo.ui.home
 
+import android.Manifest
 import android.view.LayoutInflater
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.happyfresh.happyarch.ComponentProvider
+import com.happyfresh.happyarch.Subscribe
 import com.jweatherinfo.android.databinding.FragmentHomeBinding
 import com.jweatherinfo.core.ui.BaseFragment
+import com.jweatherinfo.core.util.LocationUtil
 import com.jweatherinfo.data.event.Loaded
-import com.jweatherinfo.data.event.WeatherListLoaded
 import com.jweatherinfo.data.models.WeatherInfo
 import com.jweatherinfo.ui.component.weather.WeatherDetailsComponent
 import com.jweatherinfo.ui.component.weatherdaily.WeatherListComponent
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    private val viewModel: HomeViewModel by viewModels()
+    @Inject
+    lateinit var viewModel: HomeViewModel
 
     override fun initViewBinding(inflater: LayoutInflater): FragmentHomeBinding {
         return FragmentHomeBinding.inflate(inflater)
@@ -34,8 +42,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun onFragmentInitiated() {
-        eventObservable.emit(WeatherDetailsComponent::class.java, Loaded(WeatherInfo.mockSingle))
-        eventObservable.emit(WeatherListComponent::class.java, WeatherListLoaded(WeatherInfo.mockList))
+        LocationUtil.permissionRequest(requireContext(), requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) {
+            if (it) {
+                lifecycleScope.launch {
+                    viewModel.fetchWeather(eventObservable = eventObservable, isCurrentLocation = true)
+                    binding?.pullToRefresh?.setOnRefreshListener {
+                        binding?.pullToRefresh?.isRefreshing = true
+                        viewModel.fetchWeather(eventObservable = eventObservable, isCurrentLocation = true)
+                    }
+                }
+            }
+        }
+    }
+
+    @Subscribe(WeatherDetailsComponent::class)
+    fun subscribeWeatherDetails(loaded: Loaded<WeatherInfo>) {
+        binding?.pullToRefresh?.isRefreshing = false
     }
 
 }

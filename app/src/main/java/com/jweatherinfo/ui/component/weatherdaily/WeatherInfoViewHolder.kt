@@ -40,6 +40,5 @@ class WeatherInfoViewHolder(private val binding: ItemDailyWeatherBinding) :
                 weatherInfo.wind
             )
         }
-
     }
 }

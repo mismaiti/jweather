@@ -12,10 +12,14 @@ import com.jweatherinfo.data.models.WeatherInfo
 import com.jweatherinfo.ui.component.search.SearchCitiesComponent
 import com.jweatherinfo.ui.component.weather.WeatherDetailsComponent
 import com.jweatherinfo.ui.component.weatherdaily.WeatherListComponent
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CitiesFragment : BaseFragment<FragmentCitiesBinding>() {
 
-    private val viewModel: CitiesViewModel by viewModels()
+    @Inject
+    lateinit var viewModel: CitiesViewModel
 
     override fun initViewBinding(inflater: LayoutInflater): FragmentCitiesBinding {
         return FragmentCitiesBinding.inflate(inflater)
@@ -35,13 +39,16 @@ class CitiesFragment : BaseFragment<FragmentCitiesBinding>() {
                 WeatherDetailsComponent::class.java,
                 binding?.componentWeatherDetailsCitiesContainer?.root
             )
+            add(
+                WeatherListComponent::class.java,
+                binding?.componentWeatherListCityContainer?.root
+            )
         }
     }
 
     @Subscribe(SearchCitiesComponent::class)
     fun subscribeSearchQueries(onSubmit: OnSubmit<String>) {
-        eventObservable.emit(WeatherDetailsComponent::class.java, Loaded(WeatherInfo.mockSingle))
+        viewModel.fetchCityWeather(eventObservable, onSubmit.item)
     }
-
 
 }
