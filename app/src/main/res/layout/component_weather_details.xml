@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/jweather_content_padding_large"
-    android:paddingBottom="@dimen/jweather_content_padding_large"
+    android:paddingTop="@dimen/jweather_content_padding_medium"
+    android:paddingBottom="@dimen/jweather_content_padding_medium"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 

@@ -6,8 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.jweatherinfo.ui.cityworld.CitiesFragment">
 
+    <include layout="@layout/component_favorite_city"
+        android:id="@+id/component_favorite_city_container"/>
+
     <include layout="@layout/component_search_cities"
-        android:id="@+id/component_search_cities_container"/>
+        android:id="@+id/component_search_cities_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/component_favorite_city_container"/>
 
     <include layout="@layout/component_weather_details"
         android:id="@+id/component_weather_details_cities_container"

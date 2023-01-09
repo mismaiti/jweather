@@ -1,6 +1,8 @@
 package com.jweatherinfo.di
 
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.jweatherinfo.data.local.FavoriteCityServiceImpl
+import com.jweatherinfo.data.local.dao.FavoriteCityDao
 import com.jweatherinfo.data.remote.WeatherService
 import com.jweatherinfo.data.remote.WeatherServiceImpl
 import com.jweatherinfo.data.repo.WeatherRepoImpl
@@ -24,8 +26,17 @@ object JWeatherModule {
 
     @Singleton
     @Provides
-    fun provideWeatherRepo(weatherServiceImpl: WeatherServiceImpl): WeatherRepoImpl {
-        return WeatherRepoImpl(weatherServiceImpl)
+    fun provideWeatherRepo(
+        weatherServiceImpl: WeatherServiceImpl,
+        favoriteCityServiceImpl: FavoriteCityServiceImpl
+    ): WeatherRepoImpl {
+        return WeatherRepoImpl(weatherServiceImpl, favoriteCityServiceImpl)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavoriteCityService(favoriteCityDao: FavoriteCityDao): FavoriteCityServiceImpl {
+        return FavoriteCityServiceImpl(favoriteCityDao)
     }
 
     @Singleton

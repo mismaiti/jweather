@@ -1,5 +1,7 @@
 package com.jweatherinfo.data.repo
 
+import com.jweatherinfo.data.local.FavoriteCityServiceImpl
+import com.jweatherinfo.data.local.dao.FavoriteCity
 import com.jweatherinfo.data.models.City
 import com.jweatherinfo.data.models.WeatherInfo
 import com.jweatherinfo.data.models.toWeatherInfo
@@ -12,7 +14,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class WeatherRepoImpl @Inject constructor(private val weatherServiceImpl: WeatherServiceImpl): WeatherRepo {
+class WeatherRepoImpl @Inject constructor(
+    private val weatherServiceImpl: WeatherServiceImpl,
+    private val favoriteCityServiceImpl: FavoriteCityServiceImpl
+    ): WeatherRepo {
 
     override suspend fun getWeather(lat: Double, lon: Double): Flow<Result<WeatherInfo>> = channelFlow {
         weatherServiceImpl.getWeather(lat, lon).collectLatest {
@@ -56,7 +61,7 @@ class WeatherRepoImpl @Inject constructor(private val weatherServiceImpl: Weathe
         }
     }.catch { error -> emit(Result.failure(error)) }.flowOn(Dispatchers.IO)
 
-    override suspend fun getFavoritesCitiesWeather(cities: List<City>): Flow<Result<List<WeatherInfo>>> = flow {
+    override suspend fun getFavoritesCitiesWeather(cities: List<FavoriteCity>): Flow<Result<List<WeatherInfo>>> = flow {
         val list = cities.map { city ->
             withContext(Dispatchers.Default) {
                 async {
@@ -66,4 +71,18 @@ class WeatherRepoImpl @Inject constructor(private val weatherServiceImpl: Weathe
         }.awaitAll()
         emit(Result.success(list))
     }.catch { error -> emit(Result.failure(error)) }
+
+    override suspend fun getAllFavoriteCities(): Flow<Result<List<FavoriteCity>>> = channelFlow {
+        favoriteCityServiceImpl.getAllCity().collectLatest {
+            send(Result.success(it.getOrThrow()))
+        }
+    }.catch { error -> emit(Result.failure(error)) }
+
+    override suspend fun saveFavoriteCity(city: FavoriteCity) {
+        flowOf(favoriteCityServiceImpl.insertCity(city)).flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun deleteCities(ids: List<Long>) {
+        favoriteCityServiceImpl.deleteAllCity(ids)
+    }
 }

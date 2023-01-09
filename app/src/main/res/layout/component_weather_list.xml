@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/jweather_content_padding_medium"
-    android:paddingBottom="@dimen/jweather_content_padding_medium"
+    android:paddingTop="@dimen/jweather_content_padding_small"
+    android:paddingBottom="@dimen/jweather_content_padding_small"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -21,7 +21,7 @@
         android:id="@+id/weather_daily_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/jweather_content_padding_medium"
+        android:layout_marginTop="@dimen/jweather_content_padding_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_weather_forecast_tv"/>
 

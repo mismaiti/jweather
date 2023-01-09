@@ -21,4 +21,8 @@ open class BaseUiView<T : ViewBinding>(view: View, eventObservable: EventObserva
     fun onDestroyView() {
         binding = null
     }
+
+    fun bindDimens(toDp: Int): Int {
+        return view.context.resources.getDimensionPixelSize(toDp)
+    }
 }

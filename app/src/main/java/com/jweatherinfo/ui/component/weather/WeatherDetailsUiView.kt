@@ -6,6 +6,7 @@ import com.jweatherinfo.android.databinding.ComponentWeatherDetailsBinding
 import com.jweatherinfo.core.ext.gone
 import com.jweatherinfo.core.ext.visible
 import com.jweatherinfo.core.ui.BaseUiView
+import com.jweatherinfo.data.event.OnClick
 import com.jweatherinfo.data.models.WeatherInfo
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,6 +37,9 @@ class WeatherDetailsUiView(view: View, eventObservable: EventObservable) :
                 weatherTv.text = weather
                 humidityValueTv.text = humidity.toString()
                 windValueTv.text = wind.toString()
+            }
+            root.setOnClickListener {
+                eventObservable.emit(WeatherDetailsComponent::class.java, OnClick(weatherInfo))
             }
         }
     }
