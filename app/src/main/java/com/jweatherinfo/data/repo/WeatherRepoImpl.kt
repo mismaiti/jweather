@@ -2,14 +2,16 @@ package com.jweatherinfo.data.repo
 
 import com.jweatherinfo.data.local.FavoriteCityServiceImpl
 import com.jweatherinfo.data.local.dao.FavoriteCity
-import com.jweatherinfo.data.models.City
 import com.jweatherinfo.data.models.WeatherInfo
 import com.jweatherinfo.data.models.toWeatherInfo
 import com.jweatherinfo.data.models.toWeatherInfoList
 import com.jweatherinfo.data.remote.WeatherServiceImpl
 import com.jweatherinfo.data.remote.response.WeatherResponse
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -17,16 +19,20 @@ import javax.inject.Inject
 class WeatherRepoImpl @Inject constructor(
     private val weatherServiceImpl: WeatherServiceImpl,
     private val favoriteCityServiceImpl: FavoriteCityServiceImpl
-    ): WeatherRepo {
+) : WeatherRepo {
 
-    override suspend fun getWeather(lat: Double, lon: Double): Flow<Result<WeatherInfo>> = channelFlow {
-        weatherServiceImpl.getWeather(lat, lon).collectLatest {
-            val weatherResponse = it.getOrThrow()
-            send(Result.success(weatherResponse.toWeatherInfo()))
-        }
-    }.catch { error -> emit(Result.failure(error)) }.flowOn(Dispatchers.IO)
+    override suspend fun getWeather(lat: Double, lon: Double): Flow<Result<WeatherInfo>> =
+        channelFlow {
+            weatherServiceImpl.getWeather(lat, lon).collectLatest {
+                val weatherResponse = it.getOrThrow()
+                send(Result.success(weatherResponse.toWeatherInfo()))
+            }
+        }.catch { error -> emit(Result.failure(error)) }.flowOn(Dispatchers.IO)
 
-    override suspend fun getWeatherForecast(lat: Double, lon: Double): Flow<Result<List<WeatherInfo>>> = channelFlow {
+    override suspend fun getWeatherForecast(
+        lat: Double,
+        lon: Double
+    ): Flow<Result<List<WeatherInfo>>> = channelFlow {
         weatherServiceImpl.getWeatherForecast(lat, lon).collectLatest {
             val forecast = it.getOrThrow()
             val listResponse = mutableListOf<WeatherResponse>()
@@ -36,7 +42,7 @@ class WeatherRepoImpl @Inject constructor(
             forecast.weatherList.map { resp ->
                 withContext(Dispatchers.Default) {
                     async {
-                        calendar.time = dateFormat.parse(resp.dateText)?: Date()
+                        calendar.time = dateFormat.parse(resp.dateText) ?: Date()
                         val responseDay = calendar.get(Calendar.DAY_OF_MONTH)
                         if (day != responseDay) {
                             listResponse.add(resp)
@@ -50,39 +56,43 @@ class WeatherRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCityWeatherByQuery(query: String): Flow<Result<WeatherInfo>> = channelFlow {
-        weatherServiceImpl.getCityLatLongByQuery(query).collectLatest {
-            val citiesResponse = it.getOrThrow()
-            weatherServiceImpl.getWeather(citiesResponse.lat, citiesResponse.lng).collectLatest { weather ->
-                val weatherResponse = weather.getOrThrow()
-                weatherResponse.cityResponse = citiesResponse
-                send(Result.success(weatherResponse.toWeatherInfo()))
+    override suspend fun getCityWeatherByQuery(query: String): Flow<Result<WeatherInfo>> =
+        channelFlow {
+            weatherServiceImpl.getCityLatLongByQuery(query).collectLatest {
+                val citiesResponse = it.getOrThrow()
+                weatherServiceImpl.getWeather(citiesResponse[0].lat, citiesResponse[0].lng)
+                    .collectLatest { weather ->
+                        val weatherResponse = weather.getOrThrow()
+                        weatherResponse.cityResponse = citiesResponse[0]
+                        send(Result.success(weatherResponse.toWeatherInfo()))
+                    }
             }
-        }
-    }.catch { error -> emit(Result.failure(error)) }.flowOn(Dispatchers.IO)
+        }.catch { error -> emit(Result.failure(error)) }.flowOn(Dispatchers.IO)
 
-    override suspend fun getFavoritesCitiesWeather(cities: List<FavoriteCity>): Flow<Result<List<WeatherInfo>>> = flow {
-        val list = cities.map { city ->
-            withContext(Dispatchers.Default) {
-                async {
-                    weatherServiceImpl.getWeather(city.lat, city.lng).single().getOrThrow().toWeatherInfo()
+    override suspend fun getFavoritesCitiesWeather(cities: List<FavoriteCity>): Flow<Result<List<WeatherInfo>>> =
+        flow {
+            val list = cities.map { city ->
+                withContext(Dispatchers.Default) {
+                    async {
+                        weatherServiceImpl.getWeather(city.lat, city.lng).single().getOrThrow()
+                            .toWeatherInfo()
+                    }
                 }
-            }
-        }.awaitAll()
-        emit(Result.success(list))
-    }.catch { error -> emit(Result.failure(error)) }
+            }.awaitAll()
+            emit(Result.success(list))
+        }.catch { error -> emit(Result.failure(error)) }.flowOn(Dispatchers.IO)
 
     override suspend fun getAllFavoriteCities(): Flow<Result<List<FavoriteCity>>> = channelFlow {
         favoriteCityServiceImpl.getAllCity().collectLatest {
             send(Result.success(it.getOrThrow()))
         }
-    }.catch { error -> emit(Result.failure(error)) }
+    }.catch { error -> emit(Result.failure(error)) }.flowOn(Dispatchers.IO)
 
     override suspend fun saveFavoriteCity(city: FavoriteCity) {
         flowOf(favoriteCityServiceImpl.insertCity(city)).flowOn(Dispatchers.IO)
     }
 
     override suspend fun deleteCities(ids: List<Long>) {
-        favoriteCityServiceImpl.deleteAllCity(ids)
+        flowOf(favoriteCityServiceImpl.deleteAllCity(ids)).flowOn(Dispatchers.IO)
     }
 }

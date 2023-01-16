@@ -20,7 +20,7 @@ class FavoriteCityComponent(view: View, lifecycleOwner: LifecycleOwner) :
         loaded.data?.apply {
             uiView.show()
             uiView.loadData(this)
-        }?: run {
+        } ?: run {
             uiView.hide()
         }
     }

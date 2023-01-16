@@ -1,12 +1,10 @@
 package com.jweatherinfo.ui.cityworld
 
 import android.view.LayoutInflater
-import androidx.fragment.app.viewModels
 import com.happyfresh.happyarch.ComponentProvider
 import com.happyfresh.happyarch.Subscribe
 import com.jweatherinfo.android.databinding.FragmentCitiesBinding
 import com.jweatherinfo.core.ui.BaseFragment
-import com.jweatherinfo.data.event.Loaded
 import com.jweatherinfo.data.event.OnClick
 import com.jweatherinfo.data.event.OnSubmit
 import com.jweatherinfo.data.local.dao.FavoriteCity

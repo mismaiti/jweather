@@ -5,7 +5,11 @@ import androidx.viewbinding.ViewBinding
 import com.happyfresh.happyarch.EventObservable
 import com.happyfresh.happyarch.UiView
 
-open class BaseUiView<T : ViewBinding>(view: View, eventObservable: EventObservable, preBinding: () -> T ) :
+open class BaseUiView<T : ViewBinding>(
+    view: View,
+    eventObservable: EventObservable,
+    preBinding: () -> T
+) :
     UiView(view, eventObservable) {
 
     var binding: T? = preBinding.invoke()

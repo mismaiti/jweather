@@ -12,19 +12,16 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object JWeatherModule {
 
-    @Singleton
     @Provides
     fun provideWeatherServiceImpl(weatherService: WeatherService): WeatherServiceImpl {
         return WeatherServiceImpl(weatherService)
     }
 
-    @Singleton
     @Provides
     fun provideWeatherRepo(
         weatherServiceImpl: WeatherServiceImpl,
@@ -33,13 +30,11 @@ object JWeatherModule {
         return WeatherRepoImpl(weatherServiceImpl, favoriteCityServiceImpl)
     }
 
-    @Singleton
     @Provides
     fun provideFavoriteCityService(favoriteCityDao: FavoriteCityDao): FavoriteCityServiceImpl {
         return FavoriteCityServiceImpl(favoriteCityDao)
     }
 
-    @Singleton
     @Provides
     fun provideHomeViewModel(
         weatherRepoImpl: WeatherRepoImpl,
@@ -48,7 +43,6 @@ object JWeatherModule {
         return HomeViewModel(weatherRepoImpl, fusedLocationProviderClient)
     }
 
-    @Singleton
     @Provides
     fun provideCitiesViewModel(weatherRepoImpl: WeatherRepoImpl): CitiesViewModel {
         return CitiesViewModel(weatherRepoImpl)

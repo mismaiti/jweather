@@ -14,7 +14,6 @@ import com.jweatherinfo.MainActivity
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.catch
 import java.util.concurrent.TimeUnit
 
 object LocationUtil {

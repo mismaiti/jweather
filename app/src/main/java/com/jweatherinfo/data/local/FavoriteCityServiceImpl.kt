@@ -6,7 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class FavoriteCityServiceImpl @Inject constructor(private val favoriteCityDao: FavoriteCityDao): FavoriteCityService {
+class FavoriteCityServiceImpl @Inject constructor(private val favoriteCityDao: FavoriteCityDao) :
+    FavoriteCityService {
     override suspend fun getAllCity(): Flow<Result<List<FavoriteCity>>> = flow {
         val list = favoriteCityDao.getAllFavoriteCity()
         emit(Result.success(list))

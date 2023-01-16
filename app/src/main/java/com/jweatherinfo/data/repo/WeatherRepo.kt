@@ -1,9 +1,7 @@
 package com.jweatherinfo.data.repo
 
 import com.jweatherinfo.data.local.dao.FavoriteCity
-import com.jweatherinfo.data.models.City
 import com.jweatherinfo.data.models.WeatherInfo
-import com.jweatherinfo.data.remote.response.CitiesResponse
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepo {

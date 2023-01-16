@@ -22,19 +22,16 @@ object NetworkModule {
 
     private const val BASE_URL = "https://api.openweathermap.org/"
 
-    @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder().build()
     }
 
-    @Singleton
     @Provides
     fun provideGsonDateFormat(): Gson {
         return GsonBuilder().setDateFormat("EEEE MMM d, yyyy HH:mm").create()
     }
 
-    @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
@@ -43,16 +40,14 @@ object NetworkModule {
             .client(okHttpClient).build()
     }
 
-    @Singleton
     @Provides
     fun provideWeatherService(retrofit: Retrofit): WeatherService {
         return retrofit.create(WeatherService::class.java)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideFuseLocationProvider(@ApplicationContext context: Context): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
     }
-
 }

@@ -9,8 +9,8 @@ import com.jweatherinfo.data.event.Loaded
 import com.jweatherinfo.data.event.Loading
 import com.jweatherinfo.data.models.WeatherInfo
 
-class WeatherDetailsComponent(view: View, lifecycleOwner: LifecycleOwner)
-    : BaseComponent<WeatherDetailsUiView>(view, lifecycleOwner){
+class WeatherDetailsComponent(view: View, lifecycleOwner: LifecycleOwner) :
+    BaseComponent<WeatherDetailsUiView>(view, lifecycleOwner) {
 
     override fun onCreateView(
         view: View,
@@ -24,7 +24,7 @@ class WeatherDetailsComponent(view: View, lifecycleOwner: LifecycleOwner)
         weatherInfo.data?.let {
             uiView.show()
             uiView.loadCurrentWeather(it)
-        }?: run {
+        } ?: run {
             uiView.hide()
         }
     }

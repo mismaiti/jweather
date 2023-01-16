@@ -7,7 +7,8 @@ import com.happyfresh.happyarch.Subscribe
 import com.jweatherinfo.core.ui.BaseComponent
 import com.jweatherinfo.data.event.WeatherListLoaded
 
-class WeatherListComponent(view: View, lifecycleOwner: LifecycleOwner): BaseComponent<WeatherListUiView>(view, lifecycleOwner) {
+class WeatherListComponent(view: View, lifecycleOwner: LifecycleOwner) :
+    BaseComponent<WeatherListUiView>(view, lifecycleOwner) {
 
     override fun onCreateView(view: View, eventObservable: EventObservable): WeatherListUiView {
         return WeatherListUiView(view, eventObservable)
@@ -18,6 +19,6 @@ class WeatherListComponent(view: View, lifecycleOwner: LifecycleOwner): BaseComp
         listDailyWeather.data?.let {
             uiView.show()
             uiView.loadDailyList(it)
-        }?: run { uiView.hide() }
+        } ?: run { uiView.hide() }
     }
 }

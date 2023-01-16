@@ -2,6 +2,7 @@ package com.jweatherinfo.ui.component.weather
 
 import android.view.View
 import com.happyfresh.happyarch.EventObservable
+import com.jweatherinfo.android.R
 import com.jweatherinfo.android.databinding.ComponentWeatherDetailsBinding
 import com.jweatherinfo.core.ext.gone
 import com.jweatherinfo.core.ext.visible
@@ -33,7 +34,7 @@ class WeatherDetailsUiView(view: View, eventObservable: EventObservable) :
                 cityString.append(" ")
                 cityString.append(dateFormat.format(date))
                 cityTv.text = cityString.toString()
-                temperatureTv.text = temperature.toString()
+                temperatureTv.text = context.getString(R.string.temperature, temperature)
                 weatherTv.text = weather
                 humidityValueTv.text = humidity.toString()
                 windValueTv.text = wind.toString()

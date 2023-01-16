@@ -29,7 +29,7 @@ class FavoriteCityUiView(
             with(favoriteCityRv) {
                 this.layoutManager = layoutManager
                 this.adapter = this@FavoriteCityUiView.adapter
-                addItemDecoration(object: RecyclerView.ItemDecoration() {
+                addItemDecoration(object : RecyclerView.ItemDecoration() {
                     override fun getItemOffsets(
                         outRect: Rect,
                         view: View,

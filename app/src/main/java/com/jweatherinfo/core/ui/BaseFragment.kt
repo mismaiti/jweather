@@ -10,7 +10,7 @@ import com.happyfresh.happyarch.ComponentProvider
 import com.happyfresh.happyarch.ComponentProviders
 import com.happyfresh.happyarch.EventObservable
 
-abstract class BaseFragment<T: ViewBinding> : Fragment() {
+abstract class BaseFragment<T : ViewBinding> : Fragment() {
 
     protected var binding: T? = null
 

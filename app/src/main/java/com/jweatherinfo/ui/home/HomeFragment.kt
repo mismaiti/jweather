@@ -2,6 +2,7 @@ package com.jweatherinfo.ui.home
 
 import android.Manifest
 import android.view.LayoutInflater
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.happyfresh.happyarch.ComponentProvider
 import com.happyfresh.happyarch.Subscribe
@@ -13,15 +14,13 @@ import com.jweatherinfo.data.models.WeatherInfo
 import com.jweatherinfo.ui.component.weather.WeatherDetailsComponent
 import com.jweatherinfo.ui.component.weatherdaily.WeatherListComponent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    @Inject
-    lateinit var viewModel: HomeViewModel
+
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun initViewBinding(inflater: LayoutInflater): FragmentHomeBinding {
         return FragmentHomeBinding.inflate(inflater)
@@ -42,13 +41,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun onFragmentInitiated() {
-        LocationUtil.permissionRequest(requireContext(), requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) {
+        LocationUtil.permissionRequest(
+            requireContext(),
+            requireActivity(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) {
             if (it) {
                 lifecycleScope.launch {
-                    viewModel.fetchWeather(eventObservable = eventObservable, isCurrentLocation = true)
+                    viewModel.fetchWeather(
+                        eventObservable = eventObservable,
+                        isCurrentLocation = true
+                    )
                     binding?.pullToRefresh?.setOnRefreshListener {
                         binding?.pullToRefresh?.isRefreshing = true
-                        viewModel.fetchWeather(eventObservable = eventObservable, isCurrentLocation = true)
+                        viewModel.fetchWeather(
+                            eventObservable = eventObservable,
+                            isCurrentLocation = true
+                        )
                     }
                 }
             }

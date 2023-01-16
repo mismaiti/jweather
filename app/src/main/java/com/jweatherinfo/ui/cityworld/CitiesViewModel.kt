@@ -35,7 +35,10 @@ class CitiesViewModel @Inject constructor(
     fun fetchWeatherForecast(eventObservable: EventObservable, lat: Double, lng: Double) {
         viewModelScope.launch {
             weatherRepo.getWeatherForecast(lat, lng).collectLatest {
-                eventObservable.emit(WeatherListComponent::class.java, WeatherListLoaded(it.getOrThrow()))
+                eventObservable.emit(
+                    WeatherListComponent::class.java,
+                    WeatherListLoaded(it.getOrThrow())
+                )
             }
         }
     }
